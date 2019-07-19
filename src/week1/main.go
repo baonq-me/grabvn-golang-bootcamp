@@ -29,7 +29,7 @@ func main() {
 
 	// Regex to check expr
 	// Can bring this to another file
-	regex, _ := regexp.Compile(`\d+.?\d*\ +(\+|\-|\*|\/){1}\ +\d+.?\d*`)
+	regex, _ := regexp.Compile(`^\d+.?\d*\ +(\+|\-|\*|\/){1}\ +\d+.?\d*$`)
 
 	scanner := bufio.NewScanner(os.Stdin)
 
