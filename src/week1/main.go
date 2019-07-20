@@ -28,7 +28,7 @@ func main() {
 			var operator = expr[1]
 
 			// Calculate a and b
-			r, e := eval(a, b, fpMap[operator])
+			r, e := eval(a, b, operators[operator])
 
 			if e == nil {
 				fmt.Println(text, "=", r)
