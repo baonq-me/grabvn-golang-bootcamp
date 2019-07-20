@@ -5,6 +5,8 @@ import (
 	"math"
 )
 
+type operator func(a, b float64) (r float64, err error)
+
 func add(a, b float64) (r float64, err error) {
 	return a + b, nil
 }

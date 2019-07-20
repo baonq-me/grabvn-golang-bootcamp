@@ -7,5 +7,7 @@ var (
 )
 
 func verify(s string) bool {
+
 	return regex.MatchString(s)
+
 }

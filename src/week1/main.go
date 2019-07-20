@@ -25,10 +25,10 @@ func main() {
 			// Get a, b as float64 and operator
 			var a, _ = strconv.ParseFloat(expr[0], 10)
 			var b, _ = strconv.ParseFloat(expr[2], 10)
-			var op = expr[1]
+			var operator = expr[1]
 
 			// Calculate a and b
-			r, e := eval(a, b, fpMap[op])
+			r, e := eval(a, b, fpMap[operator])
 
 			if e == nil {
 				fmt.Println(text, "=", r)
