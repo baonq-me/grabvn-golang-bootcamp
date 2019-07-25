@@ -1,7 +1,6 @@
-package main
+package todo
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -19,63 +18,56 @@ type Todo struct {
 var db *gorm.DB
 
 func main() {
-
 	var err error
-
-	db, err = gorm.Open("mysql", "root@tcp(127.0.0.1)/todolist?parseTime=true")
-
-	fmt.Println("error: ", err)
-
+	db, err = gorm.Open("mysql", "root@tcp(127.0.0.1:3306)/todolist?parseTime=true")
 	if err != nil {
-		log.Fatal("Error: ", err)
+		log.Fatal("failed to connect db")
 	}
-
 	db.LogMode(true)
 
 	defer db.Close()
-
 	err = db.AutoMigrate(Todo{}).Error
 	if err != nil {
-		log.Fatal("Failed to migrate db")
+		log.Fatal("failed to migrate table todos")
 	}
 
 	router := gin.Default()
 
 	router.GET("/todos", listTodos)
 	router.POST("/todos", createTodo)
-	router.Run(":8080")
+	router.Run(":8088")
 }
 
 func listTodos(c *gin.Context) {
-
 	var todos []Todo
-
 	err := db.Find(&todos).Error
 
 	if err != nil {
-		c.String(500, "Failed to get todo list")
+		c.String(500, "failed to list todolist")
+		return
 	}
 
 	c.JSON(200, todos)
 }
 
 func createTodo(c *gin.Context) {
-	var arg struct {
+	var argument struct {
 		Title string
 	}
 
-	err := c.BindJSON(&arg)
+	err := c.BindJSON(&argument)
 	if err != nil {
-		c.String(400, "Invalid param")
+		c.String(400, "invalid param")
+		return
 	}
 
 	todo := Todo{
-		Title: arg.Title,
+		Title: argument.Title,
 	}
 
 	err = db.Create(&todo).Error
 	if err != nil {
-		c.String(500, "Fail to create new todo")
+		c.String(500, "failed to create new todo")
 		return
 	}
 
